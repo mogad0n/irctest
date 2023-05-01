@@ -579,6 +579,19 @@ class ChathistoryTestCase(cases.BaseServerTestCase):
         result = validate_chathistory_batch(self.getMessages(user))
         self.assertIn(echo_messages[7], result)
 
+    def _validate_chathistory_TARGETS(self, echo_messages, user, chname):
+        INCLUSIVE_LIMIT: len(echo_messages) * 2
+        self.sendLine(
+            user, 
+            "CHATHISTORY TARGETS timestamp=%s timestamp=%s %d" % 
+            (chname, echo_messages[7].time, time.now, INCLUSIVE_LIMIT),
+        )
+        result = validate_chathistory_batch(self.testChathistoryEventPlayback)
+        # `echo-messages` is a little confusing. I don't understand what to use.
+        # what does one use here to capture not the `messages` but the `targets`
+
+
+
     @pytest.mark.arbitrary_client_tags
     @skip_ngircd
     def testChathistoryTagmsg(self):
